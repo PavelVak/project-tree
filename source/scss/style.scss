@@ -1,0 +1,56 @@
+button{
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+
+  &:focus{
+    outline: none;
+  }
+}
+
+ul.tree {
+  list-style-type: none;
+  position: relative;
+
+  li {
+    padding: 5px;
+  }
+}
+.active {
+  background-color: lightgrey;
+}
+.state {
+  position: absolute;
+  left: 1em;
+}
+.collapse > .state::after {
+  content: '+';
+}
+.expand > .state::after {
+  content: '-';
+}
+.collapse > ul {
+  display: none;
+}
+.expand > ul {
+  display: block;
+}
+.item {
+  //cursor: pointer;
+}
+.state{
+  cursor: pointer;
+}
+.btn-wrapper{
+  display: inline-block;
+  margin: 0 0 0 10px;
+
+  button{
+    margin: 0 0 0 5px;
+    font-size: 14px;
+    border: 1px solid #000;
+  }
+}
+
