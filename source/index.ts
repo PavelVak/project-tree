@@ -3,6 +3,8 @@ import './scss/style.scss';
 
 import {listCategories} from "./listCategories"
 
+let itemIdMainCategory = listCategories.length+1;
+
 let treeHolder = document.createElement('div');
 treeHolder.className = 'tree-holder';
 
@@ -63,15 +65,84 @@ tree.onclick = function(event: any) {
             target.closest('li').appendChild(ul);
         }
     }
+
     if(target.className.indexOf('btn-remove') != -1){
         let id = +target.closest('li').getAttribute('id');
+        removeDataFromArray (listCategories, id);
         console.log(listCategories);
-
+        if(target.closest('ul').children.length == 1) {
+            if(target.closest('.expand')) {
+                target.closest('.expand').classList.remove('expand');
+            }
+            target.closest('ul').remove();
+        } else {
+            target.closest('li').remove();
+        }
     }
 };
 
-function removeDataFromArray (myArr, deleteValue) {
+let inputCategory = <HTMLInputElement>document.getElementById("input-category");
+let addCategoryBtn = <HTMLInputElement>document.getElementById("add-category");
+inputCategory.onkeyup = function(event:any) {
+    if(event.target.value && !event.target.value.match(/^\s+$/)) {
+        addCategoryBtn.disabled = false;
+    } else {
+        addCategoryBtn.disabled = true;
+    }
+};
 
+addCategoryBtn.onclick = function () {
+    let name = inputCategory.value;
+    let id:any = itemIdMainCategory++;
+    let parentId = 0;
+    listCategories.push({itemId: id, itemName: name, itemParentId: parentId});
+
+    let li = document.createElement('li');
+
+    let state = document.createElement('span');
+    state.className = 'state';
+
+    let category = document.createElement('span');
+    category.innerHTML = name;
+    category.classList.add('item');
+
+    let btnWrapper = document.createElement('div');
+    btnWrapper.className = 'btn-wrapper';
+
+    let btnAdd = document.createElement('button');
+    btnAdd.classList.add('btn', 'btn-add')
+    btnAdd.innerHTML = 'Add';
+
+    let btnRemove = document.createElement('button');
+    btnRemove.classList.add('btn', 'btn-remove')
+    btnRemove.innerHTML = 'Remove';
+
+    btnWrapper.appendChild(btnAdd).appendChild(btnRemove);
+
+    li.innerHTML += state.outerHTML + category.outerHTML + btnWrapper.outerHTML;
+    li.setAttribute('id', id);
+
+    document.querySelector('.tree-holder>.tree').appendChild(li);
+
+    console.log(listCategories);
+
+    inputCategory.value = '';
+    addCategoryBtn.disabled = true;
+};
+
+function removeDataFromArray (myArr, deleteParam) {
+    let tmpArr = myArr.filter((el) => { return el.itemId == deleteParam;});
+    for (let i in myArr){
+        for(let j in tmpArr)
+        if(myArr[i]['itemParentId'] == tmpArr[j]['itemId']){
+            tmpArr.push(myArr[i]);
+        }
+    }
+
+    for(let j in tmpArr)
+        if(myArr.indexOf(tmpArr[j]) > 0){
+            myArr.splice(myArr.indexOf(tmpArr[j]), 1);
+    }
 }
 
 
