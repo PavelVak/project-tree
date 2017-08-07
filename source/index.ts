@@ -41,6 +41,7 @@ tree.onclick = function(event: any) {
         let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'));
         let name = 'test name';
         let id:any = listCategoriesStorage.length+1;
+
         let parentId = target.closest('li').getAttribute('id');
         listCategoriesStorage.push({itemId: id, itemName: name, itemParentId: parentId});
         localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategoriesStorage));
@@ -69,12 +70,15 @@ tree.onclick = function(event: any) {
 
         li.innerHTML += state.outerHTML + category.outerHTML + btnWrapper.outerHTML;
         li.setAttribute('id', id);
+        li.draggable=true;
+        li.classList.add('drag-item');
 
         if (target.closest('li').querySelector('ul')) {
             target.closest('li').querySelector('ul').appendChild(li);
         } else {
             let ul = document.createElement('ul');
-            ul.classList.add('tree');
+            ul.classList.add('tree', 'drag-item');
+            ul.draggable=true;
             ul.appendChild(li);
             target.closest('li').classList.add('collapse');
             target.closest('li').appendChild(ul);
@@ -136,13 +140,15 @@ addCategoryBtn.onclick = function () {
     btnAdd.innerHTML = 'Add';
 
     let btnRemove = document.createElement('button');
-    btnRemove.classList.add('btn', 'btn-remove')
+    btnRemove.classList.add('btn', 'btn-remove');
     btnRemove.innerHTML = 'Remove';
 
     btnWrapper.appendChild(btnAdd).appendChild(btnRemove);
 
     li.innerHTML += state.outerHTML + category.outerHTML + btnWrapper.outerHTML;
     li.setAttribute('id', id);
+    li.draggable=true;
+    li.classList.add('drag-item');
 
     document.querySelector('.tree-holder>.tree').appendChild(li);
 
@@ -153,15 +159,15 @@ addCategoryBtn.onclick = function () {
 
 function removeDataFromArray (myArr, deleteParam) {
     let tmpArr = myArr.filter((el) => { return el.itemId == deleteParam;});
-    for (let i in myArr){
+    for (let i in myArr) {
         for(let j in tmpArr)
-        if(myArr[i]['itemParentId'] == tmpArr[j]['itemId']){
+        if(myArr[i]['itemParentId'] == tmpArr[j]['itemId']) {
             tmpArr.push(myArr[i]);
         }
     }
 
     for(let j in tmpArr)
-        if(myArr.indexOf(tmpArr[j]) != -1){
+        if(myArr.indexOf(tmpArr[j]) != -1) {
             myArr.splice(myArr.indexOf(tmpArr[j]), 1);
     }
 }
@@ -176,7 +182,8 @@ function createTree(data, parentId?){
     if (items.length == 0) return null;
 
     let tree = document.createElement('ul');
-    tree.className = 'tree';
+    tree.draggable =true;
+    tree.classList.add('tree', 'drag-item');
 
     let list = items.map((item) => {
         let li = document.createElement('li');
@@ -204,12 +211,14 @@ function createTree(data, parentId?){
 
         li.innerHTML += state.outerHTML + category.outerHTML + btnWrapper.outerHTML;
         li.setAttribute('id', item.itemId);
+        li.draggable =true;
+        li.classList.add('drag-item');
 
         let nestedTree = createTree(data, item.itemId);
 
         if (nestedTree !== null) {
             li.appendChild(nestedTree);
-            li.className = 'collapse';
+            li.classList.add('collapse');
         }
         return li;
 
@@ -220,6 +229,48 @@ function createTree(data, parentId?){
     });
 
     return tree;
-
 }
+
+/*begin drag&drop section*/
+let dragOnTree = document.querySelector('.tree-holder .tree');
+let dropList = document.querySelectorAll('.tree-holder .drag-item');
+console.log(dropList);
+console.log(dragOnTree);
+let dragSrc = null;
+
+dragOnTree.addEventListener('dragstart', (event: any) => {
+    dragSrc = event.target;
+    event.dataTransfer.setData('element', event.target.id);
+    console.log(dragSrc);
+});
+
+dragOnTree.addEventListener('dragover', (event: any) => {
+    event.preventDefault();
+});
+
+dropList.forEach((dropItem) => {
+    dropItem.addEventListener('drop', (event: any) => {
+        event.stopPropagation();
+        if(event.currentTarget.tagName == 'LI') {
+            console.log('Li')
+        } else if(event.currentTarget.tagName == 'UL') {
+            event.currentTarget.appendChild(dragSrc);
+        }
+        return false;
+
+    })
+});
+
+// dragOnTree.addEventListener('drop', (event: any) => {
+//     event.preventDefault();
+//     console.log('drop', event.target.nodeName);
+// });
+
+
+
+
+
+
+
+/*end drag&drop section*/
 

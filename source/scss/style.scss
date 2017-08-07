@@ -79,3 +79,19 @@ button{
   }
 }
 
+.drag-item.over {
+  border: 1px dashed #000;
+  border-top: 2px solid blue;
+}
+
+li {
+  padding: 10px 5px;
+  margin: 10px 0;
+  background: #ccc;
+}
+
+body{
+  background: red;
+}
+
+
