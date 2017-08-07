@@ -3,12 +3,25 @@ import './scss/style.scss';
 
 import {listCategories} from "./listCategories"
 
-let itemIdMainCategory = listCategories.length+1;
+//let itemIdMainCategory = listCategories.length+1;
+
+
+/*begin localStorage task*/
+
+if(!localStorage.getItem('listCategoriesStorage')) {
+    localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategories));
+}
+
+
+let itemIdMainCategory = JSON.parse(localStorage.getItem('listCategoriesStorage')).length+1;
+
+
+/*end localStorage task*/
 
 let treeHolder = document.createElement('div');
 treeHolder.className = 'tree-holder';
 
-let tree = createTree(listCategories);
+let tree = createTree(JSON.parse(localStorage.getItem('listCategoriesStorage')));  //localStorage
 treeHolder.appendChild(tree);
 document.body.insertBefore(treeHolder, document.body.lastElementChild);
 
@@ -25,10 +38,12 @@ tree.ondblclick = function(event: any){
 tree.onclick = function(event: any) {
     let target = event.target;
     if(target.className.indexOf('btn-add') != -1){
+        let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'));
         let name = 'test name';
-        let id:any = listCategories.length+1;
+        let id:any = listCategoriesStorage.length+1;
         let parentId = target.closest('li').getAttribute('id');
-        listCategories.push({itemId: id, itemName: name, itemParentId: parentId});
+        listCategoriesStorage.push({itemId: id, itemName: name, itemParentId: parentId});
+        localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategoriesStorage));
 
         let li = document.createElement('li');
 
@@ -68,7 +83,10 @@ tree.onclick = function(event: any) {
 
     if(target.className.indexOf('btn-remove') != -1){
         let id = +target.closest('li').getAttribute('id');
-        removeDataFromArray (listCategories, id);
+
+        let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'))
+        removeDataFromArray (listCategoriesStorage, id);
+        localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategoriesStorage));
         console.log(listCategories);
         if(target.closest('ul').children.length == 1) {
             if(target.closest('.expand')) {
@@ -95,7 +113,11 @@ addCategoryBtn.onclick = function () {
     let name = inputCategory.value;
     let id:any = itemIdMainCategory++;
     let parentId = 0;
-    listCategories.push({itemId: id, itemName: name, itemParentId: parentId});
+
+    let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'));
+    listCategoriesStorage.push({itemId: id, itemName: name, itemParentId: parentId});
+    localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategoriesStorage));
+    console.log(JSON.parse(localStorage.getItem('listCategoriesStorage')));
 
     let li = document.createElement('li');
 
@@ -124,7 +146,6 @@ addCategoryBtn.onclick = function () {
 
     document.querySelector('.tree-holder>.tree').appendChild(li);
 
-    console.log(listCategories);
 
     inputCategory.value = '';
     addCategoryBtn.disabled = true;
@@ -140,7 +161,7 @@ function removeDataFromArray (myArr, deleteParam) {
     }
 
     for(let j in tmpArr)
-        if(myArr.indexOf(tmpArr[j]) > 0){
+        if(myArr.indexOf(tmpArr[j]) != -1){
             myArr.splice(myArr.indexOf(tmpArr[j]), 1);
     }
 }
