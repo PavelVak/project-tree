@@ -58,11 +58,11 @@ tree.onclick = function(event: any) {
         btnWrapper.className = 'btn-wrapper';
 
         let btnAdd = document.createElement('button');
-        btnAdd.classList.add('btn', 'btn-add')
+        btnAdd.classList.add('btn', 'btn-add');
         btnAdd.innerHTML = 'Add';
 
         let btnRemove = document.createElement('button');
-        btnRemove.classList.add('btn', 'btn-remove')
+        btnRemove.classList.add('btn', 'btn-remove');
         btnRemove.innerHTML = 'Remove';
 
         btnWrapper.appendChild(btnAdd).appendChild(btnRemove);
@@ -84,7 +84,7 @@ tree.onclick = function(event: any) {
     if(target.className.indexOf('btn-remove') != -1){
         let id = +target.closest('li').getAttribute('id');
 
-        let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'))
+        let listCategoriesStorage = JSON.parse(localStorage.getItem('listCategoriesStorage'));
         removeDataFromArray (listCategoriesStorage, id);
         localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategoriesStorage));
         console.log(listCategories);
@@ -132,7 +132,7 @@ addCategoryBtn.onclick = function () {
     btnWrapper.className = 'btn-wrapper';
 
     let btnAdd = document.createElement('button');
-    btnAdd.classList.add('btn', 'btn-add')
+    btnAdd.classList.add('btn', 'btn-add');
     btnAdd.innerHTML = 'Add';
 
     let btnRemove = document.createElement('button');
@@ -193,11 +193,11 @@ function createTree(data, parentId?){
         btnWrapper.className = 'btn-wrapper';
 
         let btnAdd = document.createElement('button');
-        btnAdd.classList.add('btn', 'btn-add')
+        btnAdd.classList.add('btn', 'btn-add');
         btnAdd.innerHTML = 'Add';
 
         let btnRemove = document.createElement('button');
-        btnRemove.classList.add('btn', 'btn-remove')
+        btnRemove.classList.add('btn', 'btn-remove');
         btnRemove.innerHTML = 'Remove';
 
         btnWrapper.appendChild(btnAdd).appendChild(btnRemove);
