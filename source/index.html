@@ -8,7 +8,17 @@
     <title>Document</title>
 </head>
 <body draggable="true">
-    <h1>test</h1>
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="form-group">
+                <label>Name of Subcategory</label>
+                <input type="text" id="input-subcategory">
+                <button id="add-subcategory">Add Subcategory</button>
+            </div>
+        </div>
+    </div>
     <header>
         <div class="form-group">
             <label>Category</label>
@@ -16,5 +26,7 @@
             <button id="add-category" disabled>Add Category</button>
         </div>
     </header>
+    <section class="tree-wrapper"></section>
+    <div id="result"></div>
 </body>
 </html>

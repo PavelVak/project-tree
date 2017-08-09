@@ -1,4 +1,6 @@
-export let listCategories:any = [
+import {Category} from './category-class';
+
+export let listCategories = [
     {itemId: 1, itemName: 'Программирование', itemParentId: 0},
     {itemId: 2, itemName: 'Javascript', itemParentId: 1},
     {itemId: 3, itemName: 'Angular', itemParentId: 2},
@@ -13,4 +15,4 @@ export let listCategories:any = [
     {itemId: 12, itemName: 'Руки из жопы', itemParentId: 10},
     {itemId: 13, itemName: 'SEO', itemParentId: 0},
     {itemId: 14, itemName: 'Разное', itemParentId: 0}
-]
+];
