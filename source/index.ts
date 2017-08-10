@@ -1,84 +1,84 @@
 import 'normalize.css';
 import './scss/style.scss';
 
-//import {listCategories} from "./listCategories"
+import {listCategories} from "./listCategories"
 
 import {CategoryList} from "./categoryList-class";
 
 
-//let itemIdMainCategory = listCategories.length+1;
+// let itemIdMainCategory = listCategories.length+1;
 
-import { listCategories } from './data/listCategories';
-import { StorageService } from './services/storage.service';
-import { DomService } from './services/dom.service'
-
-class AppTree {
-    constructor (private storageService: StorageService, private domService: DomService ) {
-        /*Проверяем есть ли данные в LS*/
-        if(!storageService.getStorageData('listCategoriesStorage')){
-            storageService.setStorageData('listCategoriesStorage', listCategories);
-        }
-
-        let treeWrapper= document.querySelector('.tree-wrapper');
-        treeWrapper.appendChild(domService.createTree(storageService.getStorageData('listCategoriesStorage')));
-
-    }
-}
-
-let storageService = new StorageService();
-let domService = new DomService();
-let appTree = new AppTree(storageService, domService);
-
-
-let data = [
-    {itemId: 1, itemName: 'Программирование', itemParentId: 0},
-    {itemId: 2, itemName: 'Javascript', itemParentId: 1},
-    {itemId: 3, itemName: 'Angular', itemParentId: 2},
-    {itemId: 4, itemName: 'React', itemParentId: 2},
-    {itemId: 5, itemName: 'PHP', itemParentId: 1},
-    {itemId: 6, itemName: 'Python', itemParentId: 1},
-    {itemId: 7, itemName: 'Верстка', itemParentId: 0},
-    {itemId: 8, itemName: 'HTML', itemParentId: 7},
-    {itemId: 9, itemName: 'CSS', itemParentId: 7},
-    {itemId: 10, itemName: 'Дизайн', itemParentId: 0},
-    {itemId: 11, itemName: 'Photoshop', itemParentId: 10},
-    {itemId: 12, itemName: 'Руки из жопы', itemParentId: 10},
-    {itemId: 13, itemName: 'SEO', itemParentId: 0},
-    {itemId: 14, itemName: 'Разное', itemParentId: 0}
-];
-
-function getNestedChildren(arr, parent) {
-    let out = [];
-    for(let i in arr) {
-        if(arr[i].itemParentId == parent) {
-            let children = getNestedChildren(arr, arr[i].itemId);
-
-            if(children.length) {
-                arr[i].children = children;
-            }
-            out.push(arr[i])
-        }
-    }
-    return out;
-}
-
-let test = getNestedChildren(data, 0);
-console.log(JSON.stringify(test));
-
-function json_tree(data) {
-    let json = "<ul>";
-
-    for(let i = 0; i < data.length; ++i) {
-        json = json + "<li>" + data[i].itemName;
-        if(data[i].children && data[i].children.length) {
-            json = json + json_tree(data[i].children);
-        }
-        json = json + "</li>";
-    }
-    return json + "</ul>";
-}
-
-document.getElementById("result").innerHTML = json_tree(test);
+// import { listCategories } from './data/listCategories';
+// import { StorageService } from './services/storage.service';
+// import { DomService } from './services/dom.service'
+//
+// class AppTree {
+//     constructor (private storageService: StorageService, private domService: DomService ) {
+//         /*Проверяем есть ли данные в LS*/
+//         if(!storageService.getStorageData('listCategoriesStorage')){
+//             storageService.setStorageData('listCategoriesStorage', listCategories);
+//         }
+//
+//         let treeWrapper= document.querySelector('.tree-wrapper');
+//         treeWrapper.appendChild(domService.createTree(storageService.getStorageData('listCategoriesStorage')));
+//
+//     }
+// }
+//
+// let storageService = new StorageService();
+// let domService = new DomService();
+// let appTree = new AppTree(storageService, domService);
+//
+//
+// let data = [
+//     {itemId: 1, itemName: 'Программирование', itemParentId: 0},
+//     {itemId: 2, itemName: 'Javascript', itemParentId: 1},
+//     {itemId: 3, itemName: 'Angular', itemParentId: 2},
+//     {itemId: 4, itemName: 'React', itemParentId: 2},
+//     {itemId: 5, itemName: 'PHP', itemParentId: 1},
+//     {itemId: 6, itemName: 'Python', itemParentId: 1},
+//     {itemId: 7, itemName: 'Верстка', itemParentId: 0},
+//     {itemId: 8, itemName: 'HTML', itemParentId: 7},
+//     {itemId: 9, itemName: 'CSS', itemParentId: 7},
+//     {itemId: 10, itemName: 'Дизайн', itemParentId: 0},
+//     {itemId: 11, itemName: 'Photoshop', itemParentId: 10},
+//     {itemId: 12, itemName: 'Руки из жопы', itemParentId: 10},
+//     {itemId: 13, itemName: 'SEO', itemParentId: 0},
+//     {itemId: 14, itemName: 'Разное', itemParentId: 0}
+// ];
+//
+// function getNestedChildren(arr, parent) {
+//     let out = [];
+//     for(let i in arr) {
+//         if(arr[i].itemParentId == parent) {
+//             let children = getNestedChildren(arr, arr[i].itemId);
+//
+//             if(children.length) {
+//                 arr[i].children = children;
+//             }
+//             out.push(arr[i])
+//         }
+//     }
+//     return out;
+// }
+//
+// let test = getNestedChildren(data, 0);
+// console.log(JSON.stringify(test));
+//
+// function json_tree(data) {
+//     let json = "<ul>";
+//
+//     for(let i = 0; i < data.length; ++i) {
+//         json = json + "<li>" + data[i].itemName;
+//         if(data[i].children && data[i].children.length) {
+//             json = json + json_tree(data[i].children);
+//         }
+//         json = json + "</li>";
+//     }
+//     return json + "</ul>";
+// }
+//
+// document.getElementById("result").innerHTML = json_tree(test);
 
 
 
@@ -108,6 +108,10 @@ document.getElementById("result").innerHTML = json_tree(test);
 
 
 /*begin localStorage task*/
+
+if(!localStorage.getItem('listCategoriesStorage')){
+            localStorage.setItem('listCategoriesStorage', JSON.stringify(listCategories));
+}
 
 let itemIdMainCategory = JSON.parse(localStorage.getItem('listCategoriesStorage')).length+1;
 
